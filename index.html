@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Your Documents</title>
+    
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+    <style>
+          body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #d4e9ff, #ffffff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-bottom: 100px; 
+}
+
+
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            padding: 13px 40px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #1ebd5a;
+            transform: scale(1.05);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+            color: #A52A2A;
+            margin-bottom: 10px;
+        }
+
+        .logo span {
+            color: #0056b3;
+        }
+
+        h4 {
+            font-size: 15px;
+            margin: 5px 0;
+            color: #333;
+        }
+
+        input[type="number"] {
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #007bff;
+            border-radius: 11px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .user-info-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 30px;
+        }
+
+        .user-info-card {
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            text-align: left;
+        }
+
+        .user-info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .user-name {
+            font-size: 22px;
+            color: #333;
+        }
+
+        .user-id {
+            font-size: 18px;
+            color: #888;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .balance-card {
+            border-left: 5px solid #28a745;
+        }
+
+        .payment-card {
+            border-left: 5px solid #007bff;
+        }
+
+        .pieces-card {
+            border-left: 5px solid #6c757d;
+        }
+
+        .value {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .label {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .balance-positive {
+            color: #28a745;
+        }
+
+        .balance-negative {
+            color: #dc3545;
+        }
+        
+  
+       footer {
+    text-align: center;
+    margin-top: 60px;
+    font-size: 12px;
+    color: #888;
+    padding: 10px 0;
+}
+
+ .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .social-icons a img {
+            width: 27px;
+            height: 27px;
+            transition: transform 0.3s;
+        }
+
+        .social-icons a img:hover {
+            transform: scale(1.2);
+        }      
+        
+    </style>
+</head>
+<body>
+
+    <!-- WhatsApp Button -->
+    <a class="whatsapp-btn" href="https://wa.me/8801785598023" target="_blank">
+        Contact on WhatsApp
+    </a>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="logo">Print <span>Document</span></div>
+
+        <h4>Search Balance by ID Number</h4>
+        <input type="number" id="rollInput" placeholder="Enter ID Number">
+        <button onclick="searchUser()">Search</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const sheetID = "1dInAB4vgzbT-lUjPS4ws5rzhjilY78uK6siDWPTgLHQ";
+        const apiKey = "AIzaSyAoH72c2KbV4voNXL4aoWj2B6KpnXlfqHI";
+        let sheetData = [];
+
+        async function fetchSheetData() {
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Sheet1?key=${apiKey}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            sheetData = data.values.slice(1);
+        }
+
+        function searchUser() {
+            const id = document.getElementById("rollInput").value.trim();
+            const user = sheetData.find(row => row[1] === id);
+
+            if (user) {
+                const balanceClass = user[2] <= 0 ? "balance-negative" : "balance-positive";
+                document.getElementById("result").innerHTML = `
+                    <div class="user-info-card">
+                        <div class="user-info-header">
+                            <div class="user-name">${user[0]}</div>
+                            <div class="user-id">ID: ${user[1]}</div>
+                        </div>
+                        <div class="card balance-card ${balanceClass}">
+                            <div class="label">Balance:</div>
+                            <div class="value">${user[2]}</div>
+                        </div>
+                        <div class="card payment-card">
+                            <div class="label">Total Payment:</div>
+                            <div class="value">${user[3]}</div>
+                        </div>
+                        <div class="card pieces-card">
+                            <div class="label">Pieces:</div>
+                            <div class="value">${user[4]}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                document.getElementById("result").innerHTML = `<p>No user found.</p>`;
+            }
+        }
+
+        fetchSheetData();
+    </script>
+
+   <footer>
+   <div class="social-icons">
+<!-- Facebook -->
+<a href="https://www.facebook.com/share/1BnKV7EVgH/" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" style="filter: grayscale(100%);">
+</a>
+<!-- Instagram 
+<a href="https://www.instagram.com" target="_blank"> 
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="filter: grayscale(100%);">
+</a> -->
+<!-- Telegram -->
+<a href="https://t.me/abu_raihan127" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/62/Telegram_logo_icon.svg" alt="Telegram" style="filter: grayscale(100%);">
+</a>
+<!-- Messenger -->
+<a href="https://wa.me/+8801785598023" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Facebook_Messenger_logo_2020.svg" alt="Messenger" style="filter: grayscale(100%);">
+</a>
+<!-- WhatsApp -->
+ <a href="https://wa.me/+8801785598023" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/2062095_application_chat_communication_logo_whatsapp_icon.svg" alt="WhatsApp" style="filter: grayscale(100%);">
+    </a>
+</div>
+<p>&copy;2025 Abu Raihan.All rights reserved.</p>
+</footer>
+
+
+</body>
+</html>
